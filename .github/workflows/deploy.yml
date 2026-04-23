@@ -32,3 +32,5 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           app_name: portfolio-app
+          print_build_logs: true
+          print_deploy_logs: true
