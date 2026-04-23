@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600;1,9..144,700&family=Sora:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+/* ─── Design tokens ─────────────────────────────────────────── */
+@theme {
+  /* Fonts */
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-sans:  'Sora', system-ui, sans-serif;
+
+  /* Palette */
+  --color-canvas:       #FAFAF9;
+  --color-surface:      #FFFFFF;
+  --color-border:       #E5E4E1;
+  --color-chip:         #F0EFED;
+  --color-ink:          #1A1A1A;
+  --color-muted:        #5C5C5C;
+  --color-accent:       #9966FF;
+  --color-accent-dark:  #7A4DE6;
+  --color-accent-pale:  #EDE5FF;
+
+  /* Animations */
+  --animate-blink:      blink 1s step-end infinite;
+  --animate-dot-pulse:  dot-pulse 2s ease-in-out infinite;
+  --animate-ping:       ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes dot-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(0.7); opacity: 0.5; }
+}
+
+@keyframes ping {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+/* ─── Base ───────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: white;
+  }
+}
