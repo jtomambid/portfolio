@@ -38,88 +38,126 @@ export default function Projects({ projects }: ProjectsProps) {
         {projects.map((project, i) => (
           <motion.article
             key={project.id}
-            className="group bg-surface border border-border rounded-2xl p-7 flex flex-col transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-md"
+            className="group relative bg-surface border border-border rounded-2xl flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-md"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, delay: i * 0.08, ease: EASE }}
           >
-            {/* Top row */}
-            <div className="flex items-center justify-between mb-5">
-              <span className="text-muted text-xs font-medium">{project.year}</span>
-              <div className="flex items-center gap-3">
+            {/* Stretched link — covers the whole card */}
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Visit ${project.title}`}
+                className="absolute inset-0 z-0"
+              />
+            )}
+
+            {/* Thumbnail */}
+            {project.image && (
+              <div className="overflow-hidden h-44 bg-chip">
+                <img
+                  src={typeof project.image === 'string' ? project.image : (project.image as any).src}
+                  alt={`${project.title} preview`}
+                  className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+            )}
+
+            {/* Content */}
+            <div className="p-7 flex flex-col flex-1">
+              {/* Top row */}
+              <div className="relative z-10 flex items-center justify-between mb-5">
+                <span className="text-muted text-xs font-medium">{project.year}</span>
+                <div className="flex items-center gap-3">
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${project.title} on GitHub`}
+                      className="text-muted hover:text-ink transition-colors duration-200"
+                    >
+                      <SiGithub className="text-base" />
+                    </a>
+                  )}
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${project.title} live`}
+                      className="text-muted hover:text-accent transition-colors duration-200"
+                    >
+                      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+                        <path d="M1.5 11.5L11.5 1.5M11.5 1.5H4M11.5 1.5V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              {/* Title */}
+              <h3
+                className="font-serif font-bold text-ink mb-3 transition-colors duration-200 group-hover:text-accent"
+                style={{ fontSize: 'clamp(1.15rem, 2vw, 1.4rem)', letterSpacing: '-0.01em' }}
+              >
+                {project.title}
+              </h3>
+
+              {/* Description */}
+              <p className="text-muted text-sm leading-relaxed mb-4">
+                {project.description}
+              </p>
+
+              {/* Contributions */}
+              {project.bullets && project.bullets.length > 0 && (
+                <ul className="mb-6 flex-1 space-y-1.5">
+                  {project.bullets.map((bullet, idx) => (
+                    <li key={idx} className="flex gap-2 text-muted text-xs leading-relaxed">
+                      <span className="mt-1.5 flex-shrink-0 w-1 h-1 rounded-full bg-accent/60" />
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {!project.bullets && <div className="flex-1" />}
+
+              {/* Tags + link row */}
+              <div className="relative z-10 flex items-end justify-between gap-3">
+                <div className="flex flex-wrap gap-1.5">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="bg-chip text-muted text-[0.65rem] font-medium px-2.5 py-1 rounded-full border border-border"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
                 {project.githubUrl && (
                   <a
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`${project.title} on GitHub`}
-                    className="text-muted hover:text-ink transition-colors duration-200"
+                    className="group/link relative z-10 flex-shrink-0 inline-flex items-center gap-1.5 text-muted text-xs font-medium hover:text-accent transition-all duration-200"
                   >
-                    <SiGithub className="text-base" />
-                  </a>
-                )}
-                {project.liveUrl && (
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${project.title} live`}
-                    className="text-muted hover:text-accent transition-colors duration-200"
-                  >
-                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
-                      <path d="M1.5 11.5L11.5 1.5M11.5 1.5H4M11.5 1.5V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    View Project
+                    <svg
+                      width="11"
+                      height="11"
+                      viewBox="0 0 11 11"
+                      fill="none"
+                      className="transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
+                      aria-hidden="true"
+                    >
+                      <path d="M1 10L10 1M10 1H3.5M10 1V7.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </a>
                 )}
               </div>
-            </div>
-
-            {/* Title */}
-            <h3
-              className="font-serif font-bold text-ink mb-3 transition-colors duration-200 group-hover:text-accent"
-              style={{ fontSize: 'clamp(1.15rem, 2vw, 1.4rem)', letterSpacing: '-0.01em' }}
-            >
-              {project.title}
-            </h3>
-
-            {/* Description */}
-            <p className="text-muted text-sm leading-relaxed mb-6 flex-1">
-              {project.description}
-            </p>
-
-            {/* Tags + link row */}
-            <div className="flex items-end justify-between gap-3">
-              <div className="flex flex-wrap gap-1.5">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="bg-chip text-muted text-[0.65rem] font-medium px-2.5 py-1 rounded-full border border-border"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              {project.githubUrl && (
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group/link flex-shrink-0 inline-flex items-center gap-1.5 text-muted text-xs font-medium hover:text-accent transition-all duration-200"
-                >
-                  View Project
-                  <svg
-                    width="11"
-                    height="11"
-                    viewBox="0 0 11 11"
-                    fill="none"
-                    className="transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
-                    aria-hidden="true"
-                  >
-                    <path d="M1 10L10 1M10 1H3.5M10 1V7.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </a>
-              )}
             </div>
           </motion.article>
         ))}
